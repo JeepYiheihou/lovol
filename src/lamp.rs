@@ -4,8 +4,11 @@ pub struct Lamp {
 }
 
 impl Lamp {
-    pub fn new(is_on: bool, is_dont_disturb: bool)->Lamp {
-        return Lamp{ is_on: is_on, is_dont_disturb: is_dont_disturb };
+    pub fn new(is_on: bool, is_dont_disturb: bool) -> Lamp {
+        return Lamp {
+            is_on: is_on,
+            is_dont_disturb: is_dont_disturb
+        };
     }
 
     pub fn turn_on(&mut self) {
