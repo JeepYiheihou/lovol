@@ -1,6 +1,7 @@
 mod lamp;
 
 fn main() {
-    let _local_lamp : lamp::Lamp = lamp::Lamp{ is_on: false, is_dont_disturb: false };
+    let mut _local_lamp : lamp::Lamp = lamp::Lamp::new(false, false);
+    _local_lamp.turn_on();
     println!("Hello, lovol!");
 }
