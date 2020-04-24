@@ -1,6 +1,6 @@
 pub struct Lamp {
-    is_on: bool,
-    is_dont_disturb: bool
+    pub is_on: bool,
+    pub is_dont_disturb: bool
 }
 
 impl Lamp {
