@@ -14,7 +14,7 @@ impl Lohse {
         match _signal {
             "turn_on" => self.turn_on(),
             "turn_off" => self.turn_off(),
-            _ => Err(Error::new(ErrorKind::Other, "Unsupported signal"))
+            _ => Err(Error::new(ErrorKind::Other, "Unsupported incoming signal to Lohse"))
         }
     }
 

@@ -1,3 +1,4 @@
+mod fane;
 mod lamp;
 mod lohse;
 mod server;
@@ -15,6 +16,10 @@ fn main() -> Result<(), Error> {
         _lamp: _local_lamp,
     };
     lohse.sync_lamp();
+
+    let _fane: fane::Fane = fane::Fane {
+        central_on: false
+    };
 
     println!("Hello, lovol!");
 
