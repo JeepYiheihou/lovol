@@ -1,8 +1,8 @@
-use std::error::Error;
-use std::net::SocketAddr;
-use std::{env, io};
 use tokio;
-use tokio::net::UdpSocket;
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::net::TcpListener;
+
+use std::error::Error;
 
 pub struct Server {
     loopback: String,
@@ -17,35 +17,31 @@ impl Server {
         };
     }
 
-    async fn run(& mut self) -> Result<(), Error> {
-        let Server {
-            mut socket,
-            mut buf,
-            mut to_send,
-        } = self;
+    pub async fn start(& mut self) -> Result<(), Box<dyn Error>> {
 
-        let mut listener = TcpListener::bind(&addr).await?;
+        let mut listener = TcpListener::bind(format!("{}:{}", self.loopback, self.port)).await?;
 
-        tokio::spawn(async move {
-            let mut buf = [0; 1024];
+        loop {
+            let (mut socket, _) = listener.accept().await?;
+            tokio::spawn(async move {
+                let mut buf = [0; 1024];
 
-            loop {
-                let (mut socket, _) = listener.accept().await?;
+                loop {
+                    let n = socket
+                        .read(&mut buf)
+                        .await
+                        .expect("failed to read data from socket");
 
-                let n = socket
-                    .read(&mut buf)
-                    .await
-                    .expect("failed to read data from socket");
+                    if n == 0 {
+                        return;
+                    }
 
-                if n == 0 {
-                    return;
+                    socket
+                        .write_all(&buf[0..n])
+                        .await
+                        .expect("failed to write data to socket");
                 }
-
-                socket
-                    .write_all(&buf[0..n])
-                    .await
-                    .expect("failed to write data to socket");
-            }
-        });
+            });
+        }
     }
 }
