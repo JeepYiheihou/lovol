@@ -1,7 +1,10 @@
 mod fane;
-mod lamp;
 mod lohse;
+
+mod lamp;
+
 mod server;
+mod client;
 
 use std::error::Error;
 use tokio;
