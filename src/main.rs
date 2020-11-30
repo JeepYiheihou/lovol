@@ -22,8 +22,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let _fane: fane::Fane = fane::Fane {
         central_on: false
     };
-
     let mut _local_server: server::Server = server::Server::new(port);
     _local_server.start().await?;
+
     Ok(())
 }

@@ -18,20 +18,30 @@ impl Client {
         }
     }
 
-    pub fn connect(& mut self) {
+    pub fn connect(&mut self) {
         match TcpStream::connect(format!("{}:{}", self.target, self.port)) {
             Ok(stream) => self.stream = Some(stream),
             Err(e) => eprintln!("Error connecting to server: {}", e),
         }
     }
 
-    pub fn send_and_wait_for_response(& mut self) -> std::io::Result<()> {
-        if let Some(ref stream) = self.stream {
-            stream.write(a)?;
-            Ok(())
+    pub fn send(&mut self, content: String) {
+        if let Some(ref stream) = &self.stream {
+            let mut s = stream;
+            s.write(content.as_bytes()).unwrap();
         } else {
             eprintln!("Connection not established");
-            Ok(())
+        }
+    }
+
+    pub fn read(&mut self) {
+        let mut buffer = [0; 1024];
+        if let Some(ref stream) = self.stream {
+            let mut s = stream;
+            s.read(&mut buffer).unwrap();
+            eprintln!("{}", String::from_utf8_lossy(&buffer));
+        } else {
+            eprintln!("Connection not established");
         }
     }
 }
